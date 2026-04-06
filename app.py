@@ -95,37 +95,33 @@ if pet_names:
 else:
     st.info("Add a pet first before adding tasks.")
 
-# --- Display Pets and Their Tasks ---
+# --- Display Sorted Schedule ---
 st.divider()
-st.subheader("Your Pets & Tasks")
+st.subheader("Today's Schedule")
 
 if st.session_state.owner.pets:
-    for pet in st.session_state.owner.pets:
-        st.markdown(f"**{pet.name}** ({pet.species})")
-        if pet.get_tasks():
-            for task in pet.get_tasks():
-                status = "Done" if task.completed else "Pending"
-                st.write(f"  - {task.time} | {task.title} | {task.duration} min | {task.priority} | {status}")
-        else:
-            st.caption("  No tasks yet.")
+    scheduler = Scheduler(owner=st.session_state.owner)
+    sorted_tasks = scheduler.sort_tasks_by_time()
+
+    if sorted_tasks:
+        # Build a list of dicts for st.table
+        rows = []
+        for task in sorted_tasks:
+            rows.append({
+                "Time": task.time,
+                "Task": task.title,
+                "Duration (min)": task.duration,
+                "Priority": task.priority,
+                "Status": "Done" if task.completed else "Pending",
+            })
+        st.table(rows)
+
+        # Show a warning if any tasks conflict
+        conflicts = scheduler.detect_conflicts()
+        if conflicts:
+            for task_a, task_b in conflicts:
+                st.warning(f"Scheduling conflict: '{task_a.title}' and '{task_b.title}' are both at {task_a.time}")
+    else:
+        st.info("No tasks yet. Add tasks above to see your schedule.")
 else:
     st.info("No pets added yet.")
-
-st.divider()
-
-st.subheader("Build Schedule")
-st.caption("This button should call your scheduling logic once you implement it.")
-
-if st.button("Generate schedule"):
-    st.warning(
-        "Not implemented yet. Next step: create your scheduling logic (classes/functions) and call it here."
-    )
-    st.markdown(
-        """
-Suggested approach:
-1. Design your UML (draft).
-2. Create class stubs (no logic).
-3. Implement scheduling behavior.
-4. Connect your scheduler here and display results.
-"""
-    )
