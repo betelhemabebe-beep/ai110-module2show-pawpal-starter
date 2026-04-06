@@ -1,11 +1,34 @@
 # PawPal+ Project Reflection
 
 ## 1. System Design
+Core user actions:
+
+1. A user can add and manage pets.
+2. A user can create and schedule tasks for their pets (like feeding, walking, medication).
+3. A user can view and manage a daily schedule of tasks.
 
 **a. Initial design**
 
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
+
+My initial design includes four main classes: Owner, Pet, Task, and Scheduler.
+
+Owner:
+- Attributes: name, list of pets
+- Methods: add_pet(), get_all_tasks()
+
+Pet:
+- Attributes: name, species, list of tasks
+- Methods: add_task(), get_tasks()
+
+Task:
+- Attributes: title, time, duration, priority, frequency, completed status
+- Methods: mark_complete()
+
+Scheduler:
+- Attributes: reference to owner
+- Methods: get_all_tasks(), sort_tasks_by_time(), filter_tasks(), detect_conflicts()
 
 **b. Design changes**
 
