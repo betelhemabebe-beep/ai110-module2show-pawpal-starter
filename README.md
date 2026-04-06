@@ -31,6 +31,25 @@ PawPal+ includes lightweight scheduling logic built into the `Scheduler` class:
 - **Recurring tasks** — When `complete_task()` is called on a daily or weekly task, it automatically creates the next occurrence and adds it to the pet's task list. One-time tasks are simply marked done with nothing added.
 - **Conflict detection** — `detect_conflicts()` scans all tasks and returns any pairs scheduled at the same time, so the owner gets a warning before the day begins.
 
+## Testing PawPal+
+
+Run the full test suite with:
+
+```bash
+python -m pytest tests/test_pawpal.py -v
+```
+
+**What the tests cover:**
+
+- **Sorting** — tasks added out of order are returned in correct chronological order
+- **Recurrence** — completing a daily task automatically creates the next occurrence with the correct due date
+- **Conflict detection** — two tasks scheduled at the same time are correctly identified as a conflict
+- **Filtering** — only tasks matching the requested completion status are returned
+- **Edge cases** — no crash when there are no tasks; one-time tasks do not repeat after completion
+
+**Confidence level: ★★★★☆**
+Core scheduling behaviors are covered with clear, focused tests. Additional confidence would come from testing the Streamlit UI layer and multi-pet edge cases.
+
 ## Getting started
 
 ### Setup
